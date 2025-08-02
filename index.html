@@ -3,48 +3,103 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title></title>
+<title>Coding Motivations - Code Style</title>
 <style>
   body {
-    background: #121212;
-    color: #00ff99;
-    font-family: 'Courier New', Courier, monospace;
+    background: #0f0f0f;
+    color: #00ff00;
+    font-family: 'Source Code Pro', monospace, monospace;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    user-select: none;
   }
   #text {
-    font-size: 2rem;
-    white-space: nowrap;
-    border-right: 3px solid #00ff99;
-    padding-right: 5px;
-    overflow: hidden;
+    font-size: 1.8rem;
+    white-space: pre;
+    border-right: 2px solid #00ff00;
+    padding-right: 8px;
     max-width: 90vw;
     animation: blink 1s steps(2, start) infinite;
+    line-height: 1.4;
+    filter: drop-shadow(0 0 5px #00ff00);
   }
   @keyframes blink {
-    0%, 50% { border-color: #00ff99; }
+    0%, 50% { border-color: #00ff00; }
     50.01%, 100% { border-color: transparent; }
   }
+  .keyword { color: #569cd6; }
+  .string { color: #ce9178; }
+  .comment { color: #6a9955; font-style: italic; }
+  .function { color: #dcdcaa; }
+  .operator { color: #c586c0; }
 </style>
 </head>
 <body>
 <div id="text"></div>
 
 <script>
+  // Coding motivations formatted as code snippets with syntax classes
   const phrases = [
-    "Code is like humor. When you have to explain it, it’s bad.",
-    "Fix the cause, not the symptom.",
-    "First, solve the problem. Then, write the code.",
-    "Experience is the name everyone gives to their mistakes.",
-    "Make it work, make it right, make it fast.",
-    "Programs must be written for people to read, and only incidentally for machines to execute.",
-    "Simplicity is the soul of efficiency.",
-    "Debugging is like being the detective in a crime movie where you are also the murderer.",
-    "Code never lies, comments sometimes do.",
-    "Don’t comment bad code—rewrite it."
+`// "Code is like humor. When you have to explain it, it’s bad."
+console.log("%cCode is like humor. When you have to explain it, it’s bad.", "color:#ce9178;");`,
+
+`// Fix the cause, not the symptom.
+function fixProblem(problem) {
+  if (problem.isSymptom) {
+    return fixProblem(problem.cause);
+  }
+  return problem.solve();
+}`,
+
+`// First, solve the problem. Then, write the code.
+function solveProblem() {
+  // Think first
+  analyzeProblem();
+  // Then code
+  writeCode();
+}`,
+
+`// Experience is the name everyone gives to their mistakes.
+try {
+  doSomethingRisky();
+} catch (error) {
+  learnFrom(error);
+}`,
+
+`// Make it work, make it right, make it fast.
+while (!works()) {
+  debug();
+}
+if (works()) {
+  refactor();
+  optimize();
+}`,
+
+`// Programs must be written for people to read, and only incidentally for machines to execute.
+const readableCode = () => {
+  return "Be clear and concise";
+};`,
+
+`// Simplicity is the soul of efficiency.
+const simplify = code => code.filter(line => line.isNecessary);`,
+
+`// Debugging is like being the detective in a crime movie where you are also the murderer.
+console.debug("Searching for bugs...");`,
+
+`// Code never lies, comments sometimes do.
+const truth = code;
+const rumors = comments;`,
+
+`// Don’t comment bad code—rewrite it.
+function cleanCode(code) {
+  if (code.isBad()) {
+    return rewrite(code);
+  }
+  return code;
+}`
   ];
 
   const textElem = document.getElementById('text');
@@ -52,16 +107,25 @@
   let phraseIndex = 0;
   let charIndex = 0;
   let deleting = false;
-  const typingSpeed = 100;
-  const deletingSpeed = 50;
-  const delayBetween = 1800;
+  const typingSpeed = 40;
+  const deletingSpeed = 20;
+  const delayBetween = 2000;
+
+  function syntaxHighlight(text) {
+    // Very simple syntax highlight:
+    return text
+      .replace(/(\/\/.*)/g, '<span class="comment">$1</span>')             // comments
+      .replace(/(".*?")/g, '<span class="string">$1</span>')              // strings
+      .replace(/\b(function|return|if|else|const|let|var|try|catch|while|for|in|of)\b/g, '<span class="keyword">$1</span>')  // keywords
+      .replace(/\b(console|debug|log)\b/g, '<span class="function">$1</span>')  // functions
+      .replace(/([{}();])/g, '<span class="operator">$1</span>');         // operators
+  }
 
   function type() {
     const currentPhrase = phrases[phraseIndex];
     if (!deleting) {
-      textElem.textContent = currentPhrase.slice(0, charIndex + 1);
       charIndex++;
-
+      textElem.innerHTML = syntaxHighlight(currentPhrase.slice(0, charIndex));
       if (charIndex === currentPhrase.length) {
         deleting = true;
         setTimeout(type, delayBetween);
@@ -69,9 +133,8 @@
         setTimeout(type, typingSpeed);
       }
     } else {
-      textElem.textContent = currentPhrase.slice(0, charIndex - 1);
       charIndex--;
-
+      textElem.innerHTML = syntaxHighlight(currentPhrase.slice(0, charIndex));
       if (charIndex === 0) {
         deleting = false;
         phraseIndex = (phraseIndex + 1) % phrases.length;
