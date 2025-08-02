@@ -1,8 +1,107 @@
 <!DOCTYPE html>
-<html>
-<head><title>Live!</title></head>
-<body>
-  <h1>Hello from 23841412.xyz!</h1>
-  <p>Site is lives</p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.22.10/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 flex items-center justify-center p-4">
+    <div id="root"></div>
+    <script type="text/babel">
+        function AdminLogin() {
+            const [email, setEmail] = React.useState('');
+            const [password, setPassword] = React.useState('');
+            const [error, setError] = React.useState('');
+            const [isLoading, setIsLoading] = React.useState(false);
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                setError('');
+                setIsLoading(true);
+
+                // Basic validation
+                if (!email || !password) {
+                    setError('Please fill in all fields');
+                    setIsLoading(false);
+                    return;
+                }
+
+                if (!email.includes('@')) {
+                    setError('Please enter a valid email');
+                    setIsLoading(false);
+                    return;
+                }
+
+                // Simulate API call
+                setTimeout(() => {
+                    setIsLoading(false);
+                    alert('Login successful! (This is a demo)');
+                }, 1000);
+            };
+
+            return (
+                <div className="max-w-md w-full bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl shadow-xl p-8">
+                    <h1 className="text-3xl font-bold text-white text-center mb-8">Admin Login</h1>
+                    <div className="space-y-6">
+                        {error && (
+                            <div className="bg-red-500 bg-opacity-20 text-red-200 p-3 rounded-lg text-center">
+                                {error}
+                            </div>
+                        )}
+                        <div>
+                            <label className="block text-white text-sm font-medium mb-2" htmlFor="email">
+                                Email
+                            </label>
+                            <input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-3 bg-white bg-opacity-10 text-white border border-white border-opacity-20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                                placeholder="admin@example.com"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-white text-sm font-medium mb-2" htmlFor="password">
+                                Password
+                            </label>
+                            <input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-3 bg-white bg-opacity-10 text-white border border-white border-opacity-20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                                placeholder="••••••••"
+                            />
+                        </div>
+                        <button
+                            onClick={handleSubmit}
+                            disabled={isLoading}
+                            className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                        >
+                            {isLoading ? (
+                                <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                                </svg>
+                            ) : null}
+                            {isLoading ? 'Logging in...' : 'Login'}
+                        </button>
+                        <div className="text-center">
+                            <a href="#" className="text-white text-sm hover:underline opacity-80">
+                                Forgot Password?
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<AdminLogin />, document.getElementById('root'));
+    </script>
 </body>
 </html>
