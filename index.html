@@ -1,107 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
-    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.22.10/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cool Typing Effect</title>
+<style>
+  body {
+    background: #121212;
+    color: #00ff99;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  #text {
+    font-size: 2.5rem;
+    white-space: nowrap;
+    border-right: 3px solid #00ff99;
+    padding-right: 5px;
+    overflow: hidden;
+    max-width: 90vw;
+    animation: blink 1s steps(2, start) infinite;
+  }
+  @keyframes blink {
+    0%, 50% { border-color: #00ff99; }
+    50.01%, 100% { border-color: transparent; }
+  }
+</style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 flex items-center justify-center p-4">
-    <div id="root"></div>
-    <script type="text/babel">
-        function AdminLogin() {
-            const [email, setEmail] = React.useState('');
-            const [password, setPassword] = React.useState('');
-            const [error, setError] = React.useState('');
-            const [isLoading, setIsLoading] = React.useState(false);
+<body>
+<div id="text"></div>
 
-            const handleSubmit = (e) => {
-                e.preventDefault();
-                setError('');
-                setIsLoading(true);
+<script>
+  const phrases = [
+    "Hello, world!",
+    "Coding is fun.",
+    "AI is bad.",
+    "JavaScript rocks!",
+    "Keep calm and code on.",
+    "Random words typing...",
+    "This is a cool effect!",
+    "Enjoy the typing animation.",
+    "Make your own style.",
+    "Type. Delete. Repeat."
+  ];
 
-                // Basic validation
-                if (!email || !password) {
-                    setError('Please fill in all fields');
-                    setIsLoading(false);
-                    return;
-                }
+  const textElem = document.getElementById('text');
 
-                if (!email.includes('@')) {
-                    setError('Please enter a valid email');
-                    setIsLoading(false);
-                    return;
-                }
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let deleting = false;
+  const typingSpeed = 100;
+  const deletingSpeed = 50;
+  const delayBetween = 1500;
 
-                // Simulate API call
-                setTimeout(() => {
-                    setIsLoading(false);
-                    alert('Login successful! (This is a demo)');
-                }, 1000);
-            };
+  function type() {
+    const currentPhrase = phrases[phraseIndex];
+    if (!deleting) {
+      textElem.textContent = currentPhrase.slice(0, charIndex + 1);
+      charIndex++;
 
-            return (
-                <div className="max-w-md w-full bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl shadow-xl p-8">
-                    <h1 className="text-3xl font-bold text-white text-center mb-8">Admin Login</h1>
-                    <div className="space-y-6">
-                        {error && (
-                            <div className="bg-red-500 bg-opacity-20 text-red-200 p-3 rounded-lg text-center">
-                                {error}
-                            </div>
-                        )}
-                        <div>
-                            <label className="block text-white text-sm font-medium mb-2" htmlFor="email">
-                                Email
-                            </label>
-                            <input
-                                id="email"
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-3 bg-white bg-opacity-10 text-white border border-white border-opacity-20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-                                placeholder="admin@example.com"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-white text-sm font-medium mb-2" htmlFor="password">
-                                Password
-                            </label>
-                            <input
-                                id="password"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-3 bg-white bg-opacity-10 text-white border border-white border-opacity-20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-                                placeholder="••••••••"
-                            />
-                        </div>
-                        <button
-                            onClick={handleSubmit}
-                            disabled={isLoading}
-                            className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-                        >
-                            {isLoading ? (
-                                <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                                </svg>
-                            ) : null}
-                            {isLoading ? 'Logging in...' : 'Login'}
-                        </button>
-                        <div className="text-center">
-                            <a href="#" className="text-white text-sm hover:underline opacity-80">
-                                Forgot Password?
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
+      if (charIndex === currentPhrase.length) {
+        deleting = true;
+        setTimeout(type, delayBetween);
+      } else {
+        setTimeout(type, typingSpeed);
+      }
+    } else {
+      textElem.textContent = currentPhrase.slice(0, charIndex - 1);
+      charIndex--;
 
-        ReactDOM.render(<AdminLogin />, document.getElementById('root'));
-    </script>
+      if (charIndex === 0) {
+        deleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        setTimeout(type, typingSpeed);
+      } else {
+        setTimeout(type, deletingSpeed);
+      }
+    }
+  }
+
+  type();
+</script>
 </body>
 </html>
