@@ -1,73 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Subdomain Directory</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background: #0d0d0d;
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
+      padding: 2rem;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: #00ffff;
-      text-shadow: 0 0 10px #00ffff88;
+      font-size: 3rem;
+      color: #00ffe7;
+      text-shadow: 0 0 20px #00ffe755;
+      margin-bottom: 2rem;
     }
 
-    .subdomain-list {
+    ul.subdomain-list {
       list-style: none;
       padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
       width: 100%;
-      max-width: 600px;
+      max-width: 1000px;
     }
 
-    .subdomain-list li {
-      background: #1a1a1a;
-      margin: 0.5rem 0;
-      padding: 1rem;
-      border-radius: 12px;
-      transition: 0.3s ease;
-      box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+    ul.subdomain-list li {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(0, 255, 234, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 255, 234, 0.05);
     }
 
-    .subdomain-list li:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    ul.subdomain-list li:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 0 20px rgba(0, 255, 234, 0.4);
+      border-color: rgba(0, 255, 234, 0.5);
     }
 
     .subdomain-list a {
       text-decoration: none;
-      color: #00ffff;
+      color: #00ffe7;
       font-size: 1.2rem;
-    }
-
-    .subdomain-list a::after {
-      content: ' ↗';
-      font-size: 1rem;
+      font-weight: 600;
+      display: block;
+      word-break: break-word;
     }
 
     footer {
-      margin-top: 2rem;
-      font-size: 0.9rem;
+      margin-top: 3rem;
       color: #777;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
   <h1>🌐 Subdomains of 23841412.xyz</h1>
+
   <ul class="subdomain-list">
-    <li><a href="https://blog.example.com">chat.23841412.xyz</a></li>
-    <li><a href="https://shop.example.com">staging.23841412.xyz</a></li>
-    <li><a href="https://dev.example.com">rick.23841412.xyz</a></li>
+    <li><a href="https://chat.23841412.xyz">chat.23841412.xyz</a></li>
+    <li><a href="https://staging.23841412.xyz">staging.23841412.xyz</a></li>
+    <li><a href="https://rick.23841412.xyz">rick.23841412.xyz</a></li>
   </ul>
 
   <footer>
