@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>23841412.xyz — Neural Network Hub</title>
+  <title>23841412.xyz — Neural Network Collective</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -16,22 +16,25 @@
       --primary: #00ff88;
       --secondary: #ff0080;
       --accent: #00d4ff;
+      --tertiary: #ff4500;
+      --quaternary: #8a2be2;
       --bg-dark: #0a0a0f;
       --bg-darker: #050508;
-      --glass: rgba(255, 255, 255, 0.03);
-      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --neural-glow: rgba(0, 255, 136, 0.3);
     }
 
     body {
       font-family: 'JetBrains Mono', monospace;
-      background: var(--bg-darker);
+      background: radial-gradient(ellipse at center, var(--bg-dark) 0%, var(--bg-darker) 100%);
       color: #fff;
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
     }
 
-    /* Animated background */
+    /* Enhanced animated background */
     .bg-animation {
       position: fixed;
       top: 0;
@@ -46,53 +49,111 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      opacity: 0.15;
+      opacity: 0.2;
     }
 
     .node {
       position: absolute;
-      width: 4px;
-      height: 4px;
+      width: 6px;
+      height: 6px;
       background: var(--primary);
       border-radius: 50%;
-      box-shadow: 0 0 10px var(--primary);
-      animation: pulse 3s ease-in-out infinite;
+      box-shadow: 
+        0 0 20px var(--primary),
+        0 0 40px var(--primary),
+        0 0 60px var(--primary);
+      animation: neuralPulse 3s ease-in-out infinite;
+    }
+
+    .node.secondary { 
+      background: var(--secondary); 
+      box-shadow: 0 0 20px var(--secondary), 0 0 40px var(--secondary);
+    }
+    .node.accent { 
+      background: var(--accent); 
+      box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
     }
 
     .connection {
       position: absolute;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        var(--primary), 
+        var(--accent), 
+        var(--secondary), 
+        transparent);
       transform-origin: left center;
-      animation: flow 2s linear infinite;
+      animation: dataFlow 3s linear infinite;
+      filter: blur(0.5px);
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.3; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.5); }
+    @keyframes neuralPulse {
+      0%, 100% { 
+        opacity: 0.4; 
+        transform: scale(1); 
+        filter: brightness(1);
+      }
+      50% { 
+        opacity: 1; 
+        transform: scale(2); 
+        filter: brightness(2);
+      }
     }
 
-    @keyframes flow {
-      0% { opacity: 0; transform: scaleX(0); }
-      50% { opacity: 1; transform: scaleX(1); }
-      100% { opacity: 0; transform: scaleX(0); }
+    @keyframes dataFlow {
+      0% { opacity: 0; transform: scaleX(0) translateZ(0); }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; transform: scaleX(1) translateZ(0); }
     }
 
-    /* Floating particles */
+    /* Quantum particles */
     .particle {
       position: absolute;
-      width: 2px;
-      height: 2px;
+      width: 3px;
+      height: 3px;
       background: var(--secondary);
       border-radius: 50%;
-      animation: float 10s linear infinite;
+      box-shadow: 0 0 10px currentColor;
+      animation: quantumFloat 15s linear infinite;
     }
 
-    @keyframes float {
-      0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
+    @keyframes quantumFloat {
+      0% { 
+        transform: translateY(100vh) translateX(0) rotate(0deg) scale(0); 
+        opacity: 0; 
+      }
+      5% { opacity: 1; transform: scale(1); }
+      95% { opacity: 1; }
+      100% { 
+        transform: translateY(-10vh) translateX(200px) rotate(720deg) scale(0); 
+        opacity: 0; 
+      }
+    }
+
+    /* Matrix rain effect */
+    .matrix-rain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0.1;
+    }
+
+    .matrix-column {
+      position: absolute;
+      top: -100%;
+      color: var(--primary);
+      font-size: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      animation: matrixFall 10s linear infinite;
+    }
+
+    @keyframes matrixFall {
+      to { transform: translateY(100vh); }
     }
 
     /* Main container */
@@ -106,19 +167,29 @@
       position: relative;
     }
 
-    /* Glitch title */
+    /* Epic glitch title */
     .title {
-      font-size: clamp(2.5rem, 8vw, 6rem);
-      font-weight: 800;
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 900;
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
       position: relative;
-      background: linear-gradient(45deg, var(--primary), var(--accent), var(--secondary));
-      background-size: 200% 200%;
+      background: linear-gradient(45deg, 
+        var(--primary), 
+        var(--accent), 
+        var(--secondary), 
+        var(--tertiary), 
+        var(--quaternary));
+      background-size: 400% 400%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: gradientShift 3s ease-in-out infinite, glitch 0.3s ease-in-out infinite alternate;
+      animation: epicGradientShift 4s ease-in-out infinite, 
+                 megaGlitch 0.1s ease-in-out infinite alternate,
+                 titleFloat 6s ease-in-out infinite;
+      text-shadow: 0 0 30px var(--neural-glow);
+      filter: drop-shadow(0 0 20px var(--primary));
     }
 
     .title::before,
@@ -129,120 +200,202 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, var(--primary), var(--accent));
+      background: linear-gradient(45deg, var(--secondary), var(--primary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     .title::before {
-      animation: glitch-1 0.5s infinite;
+      animation: superGlitch1 0.2s infinite;
       z-index: -1;
     }
 
     .title::after {
-      animation: glitch-2 0.5s infinite;
+      animation: superGlitch2 0.3s infinite;
       z-index: -2;
     }
 
-    @keyframes gradientShift {
+    @keyframes epicGradientShift {
       0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
+      25% { background-position: 100% 50%; }
+      50% { background-position: 50% 100%; }
+      75% { background-position: 50% 0%; }
     }
 
-    @keyframes glitch {
-      0% { transform: translateX(0); }
-      20% { transform: translateX(-2px); }
-      40% { transform: translateX(2px); }
-      60% { transform: translateX(-1px); }
-      80% { transform: translateX(1px); }
-      100% { transform: translateX(0); }
+    @keyframes megaGlitch {
+      0% { transform: translateX(0) skew(0deg); }
+      10% { transform: translateX(-3px) skew(-2deg); }
+      20% { transform: translateX(3px) skew(2deg); }
+      30% { transform: translateX(-2px) skew(-1deg); }
+      40% { transform: translateX(2px) skew(1deg); }
+      50% { transform: translateX(-1px) skew(-0.5deg); }
+      60% { transform: translateX(1px) skew(0.5deg); }
+      100% { transform: translateX(0) skew(0deg); }
     }
 
-    @keyframes glitch-1 {
-      0% { clip-path: inset(20% 0 30% 0); transform: translateX(-2px); }
-      100% { clip-path: inset(30% 0 20% 0); transform: translateX(2px); }
+    @keyframes titleFloat {
+      0%, 100% { transform: translateY(0) rotateZ(0deg); }
+      50% { transform: translateY(-10px) rotateZ(1deg); }
     }
 
-    @keyframes glitch-2 {
-      0% { clip-path: inset(40% 0 40% 0); transform: translateX(2px); }
-      100% { clip-path: inset(50% 0 30% 0); transform: translateX(-2px); }
+    @keyframes superGlitch1 {
+      0% { clip-path: inset(10% 0 85% 0); transform: translateX(-5px) rotateY(10deg); }
+      20% { clip-path: inset(80% 0 10% 0); transform: translateX(5px) rotateY(-10deg); }
+      40% { clip-path: inset(50% 0 30% 0); transform: translateX(-3px) rotateY(5deg); }
+      60% { clip-path: inset(30% 0 70% 0); transform: translateX(3px) rotateY(-5deg); }
+      80% { clip-path: inset(70% 0 20% 0); transform: translateX(-2px) rotateY(3deg); }
+      100% { clip-path: inset(20% 0 60% 0); transform: translateX(2px) rotateY(-3deg); }
+    }
+
+    @keyframes superGlitch2 {
+      0% { clip-path: inset(90% 0 5% 0); transform: translateX(3px) rotateY(-8deg); }
+      25% { clip-path: inset(5% 0 80% 0); transform: translateX(-3px) rotateY(8deg); }
+      50% { clip-path: inset(60% 0 25% 0); transform: translateX(4px) rotateY(-6deg); }
+      75% { clip-path: inset(25% 0 65% 0); transform: translateX(-4px) rotateY(6deg); }
+      100% { clip-path: inset(75% 0 15% 0); transform: translateX(2px) rotateY(-4deg); }
     }
 
     .subtitle {
-      font-size: 1.2rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.6rem;
+      font-weight: 700;
       color: var(--accent);
       text-align: center;
       margin-bottom: 4rem;
-      opacity: 0.8;
-      letter-spacing: 0.2em;
+      opacity: 0.9;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
+      animation: subtitleGlow 3s ease-in-out infinite;
+      text-shadow: 0 0 20px var(--accent);
     }
 
-    /* Subdomain grid */
+    @keyframes subtitleGlow {
+      0%, 100% { text-shadow: 0 0 20px var(--accent); }
+      50% { text-shadow: 0 0 30px var(--accent), 0 0 40px var(--accent); }
+    }
+
+    /* Revolutionary subdomain grid */
     .subdomain-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 3rem;
       width: 100%;
-      max-width: 1200px;
-      perspective: 1000px;
+      max-width: 1400px;
+      perspective: 2000px;
     }
 
     .subdomain-card {
       position: relative;
       background: var(--glass);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 2.5rem;
+      backdrop-filter: blur(30px) saturate(180%);
+      border: 2px solid var(--glass-border);
+      border-radius: 25px;
+      padding: 3rem;
       text-align: center;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
       cursor: pointer;
       overflow: hidden;
       transform-style: preserve-3d;
+      animation: cardEntrance 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes cardEntrance {
+      from {
+        opacity: 0;
+        transform: translateY(50px) rotateY(-15deg);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateY(0deg);
+      }
     }
 
     .subdomain-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, 
+        var(--primary), 
+        var(--accent), 
+        var(--secondary), 
+        var(--tertiary), 
+        var(--quaternary));
+      background-size: 300% 300%;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      border-radius: 25px;
+      z-index: -1;
+      animation: borderFlow 6s linear infinite;
+    }
+
+    @keyframes borderFlow {
+      0%, 100% { background-position: 0% 50%; }
+      25% { background-position: 100% 50%; }
+      50% { background-position: 100% 100%; }
+      75% { background-position: 0% 100%; }
+    }
+
+    .subdomain-card::after {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, var(--primary)20, transparent, var(--secondary)20);
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), 
+        rgba(0, 255, 136, 0.15) 0%, 
+        transparent 50%);
       opacity: 0;
       transition: opacity 0.3s ease;
-      border-radius: 20px;
+      border-radius: 25px;
+      pointer-events: none;
     }
 
     .subdomain-card:hover::before {
       opacity: 1;
     }
 
+    .subdomain-card:hover::after {
+      opacity: 1;
+    }
+
     .subdomain-card:hover {
-      transform: translateY(-15px) rotateX(5deg) rotateY(5deg) scale(1.05);
+      transform: translateY(-20px) rotateX(8deg) rotateY(8deg) scale(1.08);
       box-shadow: 
-        0 25px 50px rgba(0, 255, 136, 0.2),
-        0 0 0 1px rgba(0, 255, 136, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 40px 80px rgba(0, 255, 136, 0.3),
+        0 0 0 3px rgba(0, 255, 136, 0.5),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2),
+        0 0 60px rgba(0, 255, 136, 0.4);
       border-color: var(--primary);
     }
 
     .subdomain-card:nth-child(2):hover {
       box-shadow: 
-        0 25px 50px rgba(255, 0, 128, 0.2),
-        0 0 0 1px rgba(255, 0, 128, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      border-color: var(--secondary);
+        0 40px 80px rgba(255, 0, 128, 0.3),
+        0 0 0 3px rgba(255, 0, 128, 0.5),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2),
+        0 0 60px rgba(255, 0, 128, 0.4);
     }
 
     .subdomain-card:nth-child(3):hover {
       box-shadow: 
-        0 25px 50px rgba(0, 212, 255, 0.2),
-        0 0 0 1px rgba(0, 212, 255, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      border-color: var(--accent);
+        0 40px 80px rgba(0, 212, 255, 0.3),
+        0 0 0 3px rgba(0, 212, 255, 0.5),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2),
+        0 0 60px rgba(0, 212, 255, 0.4);
+    }
+
+    .subdomain-card:nth-child(4):hover {
+      box-shadow: 
+        0 40px 80px rgba(255, 69, 0, 0.3),
+        0 0 0 3px rgba(255, 69, 0, 0.5),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2),
+        0 0 60px rgba(255, 69, 0, 0.4);
     }
 
     .card-content {
@@ -251,33 +404,58 @@
     }
 
     .card-icon {
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
+      font-size: 4rem;
+      margin-bottom: 2rem;
       display: block;
-      background: linear-gradient(45deg, var(--primary), var(--accent));
+      background: linear-gradient(135deg, var(--primary), var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: iconFloat 3s ease-in-out infinite;
+      animation: iconQuantum 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px var(--primary));
     }
 
     .subdomain-card:nth-child(2) .card-icon {
-      background: linear-gradient(45deg, var(--secondary), var(--primary));
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      filter: drop-shadow(0 0 20px var(--secondary));
     }
 
     .subdomain-card:nth-child(3) .card-icon {
-      background: linear-gradient(45deg, var(--accent), var(--secondary));
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      filter: drop-shadow(0 0 20px var(--accent));
     }
 
-    @keyframes iconFloat {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(5deg); }
+    .subdomain-card:nth-child(4) .card-icon {
+      background: linear-gradient(135deg, var(--tertiary), var(--quaternary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px var(--tertiary));
+    }
+
+    @keyframes iconQuantum {
+      0%, 100% { 
+        transform: translateY(0) rotate(0deg) scale(1); 
+        filter: drop-shadow(0 0 20px currentColor);
+      }
+      25% { 
+        transform: translateY(-15px) rotate(5deg) scale(1.1);
+        filter: drop-shadow(0 0 30px currentColor);
+      }
+      50% { 
+        transform: translateY(-8px) rotate(-3deg) scale(1.05);
+        filter: drop-shadow(0 0 25px currentColor);
+      }
+      75% { 
+        transform: translateY(-12px) rotate(2deg) scale(1.08);
+        filter: drop-shadow(0 0 35px currentColor);
+      }
     }
 
     .subdomain-link {
@@ -287,85 +465,148 @@
     }
 
     .subdomain-name {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
       color: #fff;
       transition: all 0.3s ease;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
 
     .subdomain-description {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      font-weight: 400;
     }
 
     .access-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.8rem 1.5rem;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 25px;
+      gap: 0.8rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1), 
+        rgba(255, 255, 255, 0.05));
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
       color: #fff;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      backdrop-filter: blur(20px);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .access-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+      transition: left 0.6s ease;
+    }
+
+    .access-btn:hover::before {
+      left: 100%;
     }
 
     .access-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.2), 
+        rgba(255, 255, 255, 0.1));
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
     }
 
-    /* Status indicators */
+    /* Enhanced status indicators */
     .status {
       position: absolute;
-      top: 1rem;
-      right: 1rem;
+      top: 1.5rem;
+      right: 1.5rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-size: 0.8rem;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      font-weight: 600;
       z-index: 3;
+      padding: 0.5rem 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
     }
 
     .status-dot {
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: var(--primary);
-      animation: statusPulse 2s ease-in-out infinite;
+      animation: statusQuantum 2s ease-in-out infinite;
+      box-shadow: 0 0 15px var(--primary);
     }
 
-    @keyframes statusPulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 5px var(--primary); }
-      50% { opacity: 0.5; box-shadow: 0 0 10px var(--primary); }
+    @keyframes statusQuantum {
+      0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+        box-shadow: 0 0 15px var(--primary); 
+      }
+      50% { 
+        opacity: 0.6; 
+        transform: scale(1.3);
+        box-shadow: 0 0 25px var(--primary), 0 0 35px var(--primary); 
+      }
     }
 
-    /* Footer */
+    /* Epic footer */
     .footer {
-      margin-top: 4rem;
+      margin-top: 6rem;
       text-align: center;
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1rem;
+      font-family: 'Orbitron', monospace;
       position: relative;
+      animation: footerPulse 4s ease-in-out infinite;
     }
 
     .footer::before {
       content: '';
       position: absolute;
-      top: -2rem;
+      top: -3rem;
       left: 50%;
       transform: translateX(-50%);
-      width: 100px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      width: 200px;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        var(--primary), 
+        var(--accent), 
+        var(--secondary), 
+        transparent);
+      animation: footerLineFlow 3s linear infinite;
     }
 
-    /* Responsive */
+    @keyframes footerPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes footerLineFlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* Responsive enhancements */
     @media (max-width: 768px) {
       .container {
         padding: 1rem;
@@ -373,142 +614,146 @@
       
       .subdomain-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 2rem;
       }
       
       .subdomain-card {
-        padding: 2rem;
+        padding: 2.5rem;
+      }
+
+      .title {
+        font-size: clamp(2rem, 8vw, 4rem);
       }
     }
 
-    /* Loading animation */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .subdomain-card {
-      animation: fadeInUp 0.6s ease-out forwards;
-    }
-
-    .subdomain-card:nth-child(1) { animation-delay: 0.1s; }
-    .subdomain-card:nth-child(2) { animation-delay: 0.2s; }
-    .subdomain-card:nth-child(3) { animation-delay: 0.3s; }
+    /* Staggered entrance animations */
+    .subdomain-card:nth-child(1) { animation-delay: 0.2s; }
+    .subdomain-card:nth-child(2) { animation-delay: 0.4s; }
+    .subdomain-card:nth-child(3) { animation-delay: 0.6s; }
+    .subdomain-card:nth-child(4) { animation-delay: 0.8s; }
   </style>
 </head>
 <body>
   <div class="bg-animation">
     <div class="neural-network" id="neuralNetwork"></div>
+    <div class="matrix-rain" id="matrixRain"></div>
     <div id="particles"></div>
   </div>
 
   <div class="container">
     <h1 class="title" data-text="23841412.xyz">23841412.xyz</h1>
-    <div class="subtitle">Neural Network Hub</div>
+    <div class="subtitle">Neural Network Collective</div>
     
-    <div class="subdomain-grid">
-      <div class="subdomain-card">
-        <div class="status">
-          <div class="status-dot"></div>
-          <span>ONLINE</span>
-        </div>
-        <div class="card-content">
-          <a href="https://chat.23841412.xyz" class="subdomain-link">
-            <div class="card-icon">💬</div>
-            <div class="subdomain-name">chat.23841412.xyz</div>
-            <div class="subdomain-description">
-              Advanced AI communication hub with real-time neural processing and quantum-encrypted conversations.
-            </div>
-            <div class="access-btn">
-              <span>ACCESS</span>
-              <span>→</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="subdomain-card">
-        <div class="status">
-          <div class="status-dot"></div>
-          <span>ONLINE</span>
-        </div>
-        <div class="card-content">
-          <a href="https://staging.23841412.xyz" class="subdomain-link">
-            <div class="card-icon">⚡</div>
-            <div class="subdomain-name">staging.23841412.xyz</div>
-            <div class="subdomain-description">
-              Experimental deployment environment for testing next-generation protocols and bleeding-edge features.
-            </div>
-            <div class="access-btn">
-              <span>ACCESS</span>
-              <span>→</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="subdomain-card">
-        <div class="status">
-          <div class="status-dot"></div>
-          <span>ONLINE</span>
-        </div>
-        <div class="card-content">
-          <a href="https://rick.23841412.xyz" class="subdomain-link">
-            <div class="card-icon">🚀</div>
-            <div class="subdomain-name">rick.23841412.xyz</div>
-            <div class="subdomain-description">
-              Interdimensional portal system with reality-bending capabilities and multiverse access protocols.
-            </div>
-            <div class="access-btn">
-              <span>ACCESS</span>
-              <span>→</span>
-            </div>
-          </a>
-        </div>
-      </div>
+    <div class="subdomain-grid" id="subdomainGrid">
+      <!-- Domains will be dynamically generated here -->
     </div>
 
     <div class="footer">
-      © 2025 23841412.xyz — Powered by Neural Networks
+      © 2025 23841412.xyz — Quantum-Powered Neural Architecture
     </div>
   </div>
 
   <script>
-    // Create neural network background
-    function createNeuralNetwork() {
+    // Enhanced domain configuration - super easy to add new domains!
+    const domains = [
+      {
+        subdomain: 'chat',
+        icon: '🧠',
+        name: 'Neural Chat Interface',
+        description: 'Revolutionary AI communication nexus featuring quantum-entangled language models, real-time consciousness streaming, and interdimensional conversation protocols. Experience the future of human-AI symbiosis.',
+        color: 'primary',
+        status: 'ONLINE'
+      },
+      {
+        subdomain: 'staging',
+        icon: '⚡',
+        name: 'Experimental Deployment Zone',
+        description: 'Bleeding-edge testing environment where tomorrow\'s technologies are born. Deploy, test, and optimize next-generation applications with quantum computing clusters and neural processing units.',
+        color: 'secondary',
+        status: 'ONLINE'
+      },
+      {
+        subdomain: 'rick',
+        icon: '🌌',
+        name: 'Interdimensional Portal System',
+        description: 'Multi-verse access gateway with reality-bending capabilities. Navigate infinite timelines, explore parallel dimensions, and harness the power of quantum mechanics for universal connectivity.',
+        color: 'accent',
+        status: 'ONLINE'
+      },
+      {
+        subdomain: 'development',
+        icon: '🔬',
+        name: 'Quantum Development Lab',
+        description: 'Advanced development environment powered by quantum algorithms and neural network optimization. Build applications that transcend traditional computing limitations with AI-assisted coding.',
+        color: 'tertiary',
+        status: 'ONLINE'
+      }
+    ];
+
+    // Generate subdomain cards dynamically
+    function generateSubdomainCards() {
+      const grid = document.getElementById('subdomainGrid');
+      
+      domains.forEach((domain, index) => {
+        const card = document.createElement('div');
+        card.className = 'subdomain-card';
+        card.innerHTML = `
+          <div class="status">
+            <div class="status-dot"></div>
+            <span>${domain.status}</span>
+          </div>
+          <div class="card-content">
+            <a href="https://${domain.subdomain}.23841412.xyz" class="subdomain-link">
+              <div class="card-icon">${domain.icon}</div>
+              <div class="subdomain-name">${domain.name}</div>
+              <div class="subdomain-description">
+                ${domain.description}
+              </div>
+              <div class="access-btn">
+                <span>ENTER NEURAL SPACE</span>
+                <span>→</span>
+              </div>
+            </a>
+          </div>
+        `;
+        
+        grid.appendChild(card);
+      });
+    }
+
+    // Create enhanced neural network background
+    function createAdvancedNeuralNetwork() {
       const network = document.getElementById('neuralNetwork');
       const nodes = [];
-      const nodeCount = 20;
+      const nodeCount = 30;
+      const colors = ['primary', 'secondary', 'accent'];
 
-      // Create nodes
+      // Create nodes with different types
       for (let i = 0; i < nodeCount; i++) {
         const node = document.createElement('div');
-        node.className = 'node';
+        const colorClass = colors[Math.floor(Math.random() * colors.length)];
+        node.className = `node ${colorClass}`;
         node.style.left = Math.random() * 100 + '%';
         node.style.top = Math.random() * 100 + '%';
         node.style.animationDelay = Math.random() * 3 + 's';
         network.appendChild(node);
+        
         nodes.push({
           element: node,
           x: parseFloat(node.style.left),
-          y: parseFloat(node.style.top)
+          y: parseFloat(node.style.top),
+          type: colorClass
         });
       }
 
-      // Create connections
+      // Create intelligent connections
       nodes.forEach((nodeA, i) => {
         nodes.slice(i + 1).forEach(nodeB => {
           const distance = Math.sqrt(
             Math.pow(nodeA.x - nodeB.x, 2) + Math.pow(nodeA.y - nodeB.y, 2)
           );
           
-          if (distance < 25) {
+          if (distance < 30) {
             const connection = document.createElement('div');
             connection.className = 'connection';
             const angle = Math.atan2(nodeB.y - nodeA.y, nodeB.x - nodeA.x);
@@ -517,62 +762,31 @@
             connection.style.width = distance + 'vw';
             connection.style.transform = `rotate(${angle}rad)`;
             connection.style.animationDelay = Math.random() * 2 + 's';
+            connection.style.animationDuration = (2 + Math.random() * 2) + 's';
             network.appendChild(connection);
           }
         });
       });
     }
 
-    // Create floating particles
-    function createParticles() {
-      const particlesContainer = document.getElementById('particles');
+    // Create matrix rain effect
+    function createMatrixRain() {
+      const matrixContainer = document.getElementById('matrixRain');
+      const characters = '0123456789ABCDEFabcdef※♦♠♣♥αβγδεζηθικλμνξοπρστυφχψω';
       
-      setInterval(() => {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
-        particlesContainer.appendChild(particle);
-
-        setTimeout(() => {
-          particle.remove();
-        }, 15000);
-      }, 2000);
+      for (let i = 0; i < 50; i++) {
+        const column = document.createElement('div');
+        column.className = 'matrix-column';
+        column.style.left = Math.random() * 100 + '%';
+        column.style.animationDuration = (5 + Math.random() * 10) + 's';
+        column.style.animationDelay = Math.random() * 10 + 's';
+        
+        let text = '';
+        for (let j = 0; j < 20; j++) {
+          text += characters[Math.floor(Math.random() * characters.length)] + '<br>';
+        }
+        column.innerHTML = text;
+        
+        matrixContainer.appendChild(column);
+      }
     }
-
-    // Add interactive effects
-    document.querySelectorAll('.subdomain-card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 20;
-        const rotateY = (centerX - x) / 20;
-        
-        card.style.transform = `translateY(-15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-      });
-      
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-      });
-    });
-
-    // Initialize
-    createNeuralNetwork();
-    createParticles();
-
-    // Add glitch effect to title occasionally
-    setInterval(() => {
-      const title = document.querySelector('.title');
-      title.style.animation = 'none';
-      setTimeout(() => {
-        title.style.animation = 'gradientShift 3s ease-in-out infinite, glitch 0.3s ease-in-out infinite alternate';
-      }, 100);
-    }, 10000);
-  </script>
-</body>
-</html>
