@@ -3,149 +3,461 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>f</title>
+<title>Code Wisdom Terminal</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+  
+  * {
+    box-sizing: border-box;
+  }
+  
   body {
-    background: #0f0f0f;
-    color: #00ff00;
-    font-family: 'Source Code Pro', monospace, monospace;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    color: #00ff88;
+    font-family: 'JetBrains Mono', 'Source Code Pro', monospace;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
+    padding: 20px;
     user-select: none;
+    overflow: hidden;
+    position: relative;
   }
-  #text {
-    font-size: 1.8rem;
-    white-space: pre;
-    border-right: 2px solid #00ff00;
-    padding-right: 8px;
+  
+  /* Animated background particles */
+  .bg-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+  }
+  
+  .particle {
+    position: absolute;
+    background: #00ff88;
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: float 20s infinite ease-in-out;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.1; }
+    90% { opacity: 0.1; }
+    50% { transform: translateY(-10vh) rotate(180deg); opacity: 0.3; }
+  }
+  
+  .terminal-container {
+    background: rgba(15, 15, 30, 0.9);
+    border: 2px solid #00ff88;
+    border-radius: 12px;
+    padding: 20px;
     max-width: 90vw;
-    animation: blink 1s steps(2, start) infinite;
-    line-height: 1.4;
-    filter: drop-shadow(0 0 5px #00ff00);
+    width: 100%;
+    max-width: 800px;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+      0 0 30px rgba(0, 255, 136, 0.3),
+      inset 0 0 30px rgba(0, 255, 136, 0.05);
+    position: relative;
+    z-index: 1;
   }
+  
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+  }
+  
+  .terminal-buttons {
+    display: flex;
+    gap: 8px;
+    margin-right: 15px;
+  }
+  
+  .btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+  }
+  
+  .btn.close { background: #ff5f57; }
+  .btn.minimize { background: #ffbd2e; }
+  .btn.maximize { background: #28ca42; }
+  
+  .terminal-title {
+    font-size: 0.9rem;
+    color: #888;
+    font-weight: 500;
+  }
+  
+  .prompt {
+    color: #569cd6;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(86, 156, 214, 0.5);
+  }
+  
+  #text {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    white-space: pre-wrap;
+    border-right: 3px solid #00ff88;
+    padding-right: 8px;
+    line-height: 1.6;
+    filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.4));
+    animation: blink 1s steps(2, start) infinite;
+    min-height: 200px;
+    word-wrap: break-word;
+  }
+  
   @keyframes blink {
-    0%, 50% { border-color: #00ff00; }
+    0%, 50% { border-color: #00ff88; }
     50.01%, 100% { border-color: transparent; }
   }
-  .keyword { color: #569cd6; }
-  .string { color: #ce9178; }
-  .comment { color: #6a9955; font-style: italic; }
-  .function { color: #dcdcaa; }
-  .operator { color: #c586c0; }
+  
+  /* Enhanced syntax highlighting */
+  .keyword { 
+    color: #569cd6; 
+    font-weight: 600;
+    text-shadow: 0 0 5px rgba(86, 156, 214, 0.3);
+  }
+  .string { 
+    color: #ce9178; 
+    text-shadow: 0 0 5px rgba(206, 145, 120, 0.3);
+  }
+  .comment { 
+    color: #6a9955; 
+    font-style: italic; 
+    opacity: 0.9;
+  }
+  .function { 
+    color: #dcdcaa; 
+    font-weight: 500;
+    text-shadow: 0 0 5px rgba(220, 220, 170, 0.3);
+  }
+  .operator { 
+    color: #c586c0; 
+    font-weight: 600;
+  }
+  .number { 
+    color: #b5cea8; 
+  }
+  .boolean { 
+    color: #569cd6; 
+    font-weight: 600;
+  }
+  
+  .controls {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    gap: 10px;
+    z-index: 2;
+  }
+  
+  .control-btn {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid #00ff88;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #00ff88;
+    font-family: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+  }
+  
+  .control-btn:hover {
+    background: rgba(0, 255, 136, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+    transform: translateY(-2px);
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .terminal-container {
+      margin: 10px;
+      padding: 15px;
+    }
+    
+    #text {
+      font-size: 1rem;
+      min-height: 150px;
+    }
+    
+    .controls {
+      bottom: 20px;
+      right: 20px;
+      flex-direction: column;
+    }
+  }
+  
+  /* Loading animation */
+  .loading {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+  }
+  
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
 </style>
 </head>
 <body>
-<div id="text"></div>
+  <div class="bg-particles"></div>
+  
+  <div class="terminal-container loading">
+    <div class="terminal-header">
+      <div class="terminal-buttons">
+        <div class="btn close"></div>
+        <div class="btn minimize"></div>
+        <div class="btn maximize"></div>
+      </div>
+      <div class="terminal-title">~/dev/wisdom — terminal</div>
+    </div>
+    
+    <div class="prompt">developer@codelife:~$ ./wisdom_generator</div>
+    <div id="text"></div>
+  </div>
+  
+  <div class="controls">
+    <button class="control-btn" onclick="togglePause()">⏸️ Pause</button>
+    <button class="control-btn" onclick="nextPhrase()">⏭️ Next</button>
+    <button class="control-btn" onclick="toggleSpeed()">⚡ Speed</button>
+  </div>
 
 <script>
-  // Coding motivations formatted as code snippets with syntax classes
+  // Enhanced coding wisdom with better formatting and more variety
   const phrases = [
-`// "Code is like humor. When you have to explain it, it’s bad."
-console.log("%cCode is like humor. When you have to explain it, it’s bad.", "color:#ce9178;");`,
+`// "Code is like humor. When you have to explain it, it's bad." - Cory House
+console.log("%cThe best code speaks for itself", "color: #ce9178; font-weight: bold;");`,
 
-`// Fix the cause, not the symptom.
-function fixProblem(problem) {
-  if (problem.isSymptom) {
-    return fixProblem(problem.cause);
+`// Fix the cause, not the symptom
+function debugLikeAPro(issue) {
+  while (issue.isSymptom()) {
+    issue = issue.getRootCause();
   }
-  return problem.solve();
+  return issue.solve();
 }`,
 
-`// First, solve the problem. Then, write the code.
-function solveProblem() {
-  // Think first
-  analyzeProblem();
-  // Then code
-  writeCode();
-}`,
-
-`// Experience is the name everyone gives to their mistakes.
-try {
-  doSomethingRisky();
-} catch (error) {
-  learnFrom(error);
-}`,
-
-`// Make it work, make it right, make it fast.
-while (!works()) {
-  debug();
-}
-if (works()) {
-  refactor();
-  optimize();
-}`,
-
-`// Programs must be written for people to read, and only incidentally for machines to execute.
-const readableCode = () => {
-  return "Be clear and concise";
+`// First, solve the problem. Then, write the code
+const developmentProcess = () => {
+  const solution = thinkThroughProblem();
+  const code = implementSolution(solution);
+  return test(code) ? code : debugLikeAPro(code);
 };`,
 
-`// Simplicity is the soul of efficiency.
-const simplify = code => code.filter(line => line.isNecessary);`,
+`// "Experience is the name everyone gives to their mistakes." - Oscar Wilde
+const mistakes = [];
+try {
+  attemptSomethingAmbitious();
+} catch (error) {
+  mistakes.push(error);
+  const wisdom = learn(error);
+  return wisdom;
+}`,
 
-`// Debugging is like being the detective in a crime movie where you are also the murderer.
-console.debug("Searching for bugs...");`,
-
-`// Code never lies, comments sometimes do.
-const truth = code;
-const rumors = comments;`,
-
-`// Don’t comment bad code—rewrite it.
-function cleanCode(code) {
-  if (code.isBad()) {
-    return rewrite(code);
+`// Make it work, make it right, make it fast
+let code = makeItWork();
+if (code.works()) {
+  code = makeItRight(code);
+  if (code.isClean()) {
+    code = makeItFast(code);
   }
-  return code;
-}`
+}`,
+
+`// "Programs must be written for people to read" - Harold Abelson
+const humanReadableCode = {
+  clarity: true,
+  simplicity: true,
+  expressiveness: true,
+  // Machine execution is just a bonus
+  executable: true
+};`,
+
+`// Simplicity is the ultimate sophistication
+const elegantSolution = complexity => {
+  return complexity
+    .filter(essential)
+    .map(simplify)
+    .reduce(compose);
+};`,
+
+`// "Debugging is like being a detective in a crime movie where you are also the murderer"
+console.log("🔍 Investigating the crime scene...");
+console.log("🕵️ Wait... I wrote this code...");
+console.log("😅 Plot twist: I am the murderer!");`,
+
+`// Code never lies, comments sometimes do
+const truth = sourceCode;
+const fiction = outdatedComments;
+// This comment might be lying right now`,
+
+`// "Don't comment bad code—rewrite it." - Brian Kernighan
+if (code.needsComment()) {
+  return rewrite(code); // Self-documenting is better
+} else {
+  return code; // Already speaks for itself
+}`,
+
+`// "There are only two hard things in Computer Science" - Phil Karlton
+const hardThings = [
+  'cache invalidation',
+  'naming things',
+  'off-by-one errors' // Wait, that's three...
+];`,
+
+`// Perfect is the enemy of good
+function ship(product) {
+  if (product.isGoodEnough() && !product.isPerfect()) {
+    return deploy(product);
+  }
+  // Perfection paralysis is real
+}`,
+
+`// "Any fool can write code that a computer can understand." - Martin Fowler
+const challenge = "Write code that humans understand";
+const masterProgrammer = developer.who(can(challenge));`,
+
+`// Premature optimization is the root of all evil
+function optimize(code) {
+  if (!code.hasPerformanceIssue()) {
+    return code; // Don't fix what ain't broken
+  }
+  return measure(code).then(optimizeBottleneck);
+}`,
+
+`// "Code is read much more often than it is written." - Guido van Rossum
+const timeSpent = {
+  writing: '20%',
+  reading: '80%'
+};
+// Optimize for the 80%`
   ];
 
   const textElem = document.getElementById('text');
-
   let phraseIndex = 0;
   let charIndex = 0;
   let deleting = false;
-  const typingSpeed = 40;
-  const deletingSpeed = 20;
-  const delayBetween = 2000;
+  let paused = false;
+  let fastMode = false;
+  
+  const speeds = {
+    typing: { normal: 50, fast: 25 },
+    deleting: { normal: 25, fast: 15 },
+    delay: { normal: 3000, fast: 1500 }
+  };
 
-  function syntaxHighlight(text) {
-    // Very simple syntax highlight:
+  // Create floating particles
+  function createParticles() {
+    const container = document.querySelector('.bg-particles');
+    for (let i = 0; i < 15; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
+      particle.style.animationDelay = Math.random() * 20 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+      container.appendChild(particle);
+    }
+  }
+
+  function enhancedSyntaxHighlight(text) {
     return text
-      .replace(/(\/\/.*)/g, '<span class="comment">$1</span>')             // comments
-      .replace(/(".*?")/g, '<span class="string">$1</span>')              // strings
-      .replace(/\b(function|return|if|else|const|let|var|try|catch|while|for|in|of)\b/g, '<span class="keyword">$1</span>')  // keywords
-      .replace(/\b(console|debug|log)\b/g, '<span class="function">$1</span>')  // functions
-      .replace(/([{}();])/g, '<span class="operator">$1</span>');         // operators
+      .replace(/(\/\/.*)/g, '<span class="comment">$1</span>')
+      .replace(/(".*?")/g, '<span class="string">$1</span>')
+      .replace(/('.*?')/g, '<span class="string">$1</span>')
+      .replace(/(`.*?`)/g, '<span class="string">$1</span>')
+      .replace(/\b(function|return|if|else|const|let|var|try|catch|while|for|in|of|class|import|export|async|await|new|this)\b/g, '<span class="keyword">$1</span>')
+      .replace(/\b(console|log|debug|error|warn|push|map|filter|reduce|forEach)\b/g, '<span class="function">$1</span>')
+      .replace(/\b(\d+\.?\d*)\b/g, '<span class="number">$1</span>')
+      .replace(/\b(true|false|null|undefined)\b/g, '<span class="boolean">$1</span>')
+      .replace(/([{}();,.=+\-*\/])/g, '<span class="operator">$1</span>');
   }
 
   function type() {
+    if (paused) {
+      setTimeout(type, 100);
+      return;
+    }
+
     const currentPhrase = phrases[phraseIndex];
+    const currentSpeed = fastMode ? 'fast' : 'normal';
+    
     if (!deleting) {
       charIndex++;
-      textElem.innerHTML = syntaxHighlight(currentPhrase.slice(0, charIndex));
+      textElem.innerHTML = enhancedSyntaxHighlight(currentPhrase.slice(0, charIndex));
+      
       if (charIndex === currentPhrase.length) {
         deleting = true;
-        setTimeout(type, delayBetween);
+        setTimeout(type, speeds.delay[currentSpeed]);
       } else {
-        setTimeout(type, typingSpeed);
+        setTimeout(type, speeds.typing[currentSpeed]);
       }
     } else {
       charIndex--;
-      textElem.innerHTML = syntaxHighlight(currentPhrase.slice(0, charIndex));
+      textElem.innerHTML = enhancedSyntaxHighlight(currentPhrase.slice(0, charIndex));
+      
       if (charIndex === 0) {
         deleting = false;
         phraseIndex = (phraseIndex + 1) % phrases.length;
-        setTimeout(type, typingSpeed);
+        setTimeout(type, speeds.typing[currentSpeed]);
       } else {
-        setTimeout(type, deletingSpeed);
+        setTimeout(type, speeds.deleting[currentSpeed]);
       }
     }
   }
 
-  type();
+  // Control functions
+  function togglePause() {
+    paused = !paused;
+    const btn = document.querySelector('.controls .control-btn');
+    btn.textContent = paused ? '▶️ Resume' : '⏸️ Pause';
+  }
+
+  function nextPhrase() {
+    charIndex = 0;
+    deleting = false;
+    phraseIndex = (phraseIndex + 1) % phrases.length;
+  }
+
+  function toggleSpeed() {
+    fastMode = !fastMode;
+    const btn = document.querySelector('.controls .control-btn:last-child');
+    btn.textContent = fastMode ? '🐌 Normal' : '⚡ Speed';
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    switch(e.key) {
+      case ' ':
+        e.preventDefault();
+        togglePause();
+        break;
+      case 'ArrowRight':
+        nextPhrase();
+        break;
+      case 'ArrowUp':
+        toggleSpeed();
+        break;
+    }
+  });
+
+  // Initialize
+  createParticles();
+  setTimeout(() => {
+    document.querySelector('.terminal-container').classList.add('loading');
+    type();
+  }, 100);
 </script>
 </body>
 </html>
