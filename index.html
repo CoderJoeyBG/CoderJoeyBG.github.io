@@ -2,93 +2,577 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Subdomain Directory</title>
+  <title>23841412.xyz — Neural Network Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #00ff88;
+      --secondary: #ff0080;
+      --accent: #00d4ff;
+      --bg-dark: #0a0a0f;
+      --bg-darker: #050508;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     body {
-      margin: 0;
-      padding: 2rem;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg-darker);
       color: #fff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Animated background */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .neural-network {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0.15;
+    }
+
+    .node {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .connection {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      transform-origin: left center;
+      animation: flow 2s linear infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+
+    @keyframes flow {
+      0% { opacity: 0; transform: scaleX(0); }
+      50% { opacity: 1; transform: scaleX(1); }
+      100% { opacity: 0; transform: scaleX(0); }
+    }
+
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--secondary);
+      border-radius: 50%;
+      animation: float 10s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main container */
+    .container {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
     }
 
-    h1 {
-      font-size: 3rem;
-      color: #00ffe7;
-      text-shadow: 0 0 20px #00ffe755;
-      margin-bottom: 2rem;
+    /* Glitch title */
+    .title {
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+      background: linear-gradient(45deg, var(--primary), var(--accent), var(--secondary));
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease-in-out infinite, glitch 0.3s ease-in-out infinite alternate;
     }
 
-    ul.subdomain-list {
-      list-style: none;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+    .title::before,
+    .title::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-width: 1000px;
+      height: 100%;
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    ul.subdomain-list li {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(0, 255, 234, 0.2);
-      backdrop-filter: blur(10px);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      text-align: center;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(0, 255, 234, 0.05);
+    .title::before {
+      animation: glitch-1 0.5s infinite;
+      z-index: -1;
     }
 
-    ul.subdomain-list li:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 0 20px rgba(0, 255, 234, 0.4);
-      border-color: rgba(0, 255, 234, 0.5);
+    .title::after {
+      animation: glitch-2 0.5s infinite;
+      z-index: -2;
     }
 
-    .subdomain-list a {
-      text-decoration: none;
-      color: #00ffe7;
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes glitch {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-2px); }
+      40% { transform: translateX(2px); }
+      60% { transform: translateX(-1px); }
+      80% { transform: translateX(1px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes glitch-1 {
+      0% { clip-path: inset(20% 0 30% 0); transform: translateX(-2px); }
+      100% { clip-path: inset(30% 0 20% 0); transform: translateX(2px); }
+    }
+
+    @keyframes glitch-2 {
+      0% { clip-path: inset(40% 0 40% 0); transform: translateX(2px); }
+      100% { clip-path: inset(50% 0 30% 0); transform: translateX(-2px); }
+    }
+
+    .subtitle {
       font-size: 1.2rem;
-      font-weight: 600;
-      display: block;
-      word-break: break-word;
-    }
-
-    footer {
-      margin-top: 3rem;
-      color: #777;
-      font-size: 0.9rem;
+      color: var(--accent);
       text-align: center;
+      margin-bottom: 4rem;
+      opacity: 0.8;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2rem;
+    /* Subdomain grid */
+    .subdomain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+      perspective: 1000px;
+    }
+
+    .subdomain-card {
+      position: relative;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .subdomain-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--primary)20, transparent, var(--secondary)20);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 20px;
+    }
+
+    .subdomain-card:hover::before {
+      opacity: 1;
+    }
+
+    .subdomain-card:hover {
+      transform: translateY(-15px) rotateX(5deg) rotateY(5deg) scale(1.05);
+      box-shadow: 
+        0 25px 50px rgba(0, 255, 136, 0.2),
+        0 0 0 1px rgba(0, 255, 136, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
+    }
+
+    .subdomain-card:nth-child(2):hover {
+      box-shadow: 
+        0 25px 50px rgba(255, 0, 128, 0.2),
+        0 0 0 1px rgba(255, 0, 128, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: var(--secondary);
+    }
+
+    .subdomain-card:nth-child(3):hover {
+      box-shadow: 
+        0 25px 50px rgba(0, 212, 255, 0.2),
+        0 0 0 1px rgba(0, 212, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: block;
+      background: linear-gradient(45deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: iconFloat 3s ease-in-out infinite;
+    }
+
+    .subdomain-card:nth-child(2) .card-icon {
+      background: linear-gradient(45deg, var(--secondary), var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subdomain-card:nth-child(3) .card-icon {
+      background: linear-gradient(45deg, var(--accent), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    .subdomain-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .subdomain-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .subdomain-description {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .access-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 25px;
+      color: #fff;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .access-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Status indicators */
+    .status {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      z-index: 3;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 5px var(--primary); }
+      50% { opacity: 0.5; box-shadow: 0 0 10px var(--primary); }
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 4rem;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.9rem;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .subdomain-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .subdomain-card {
+        padding: 2rem;
       }
     }
+
+    /* Loading animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .subdomain-card {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .subdomain-card:nth-child(1) { animation-delay: 0.1s; }
+    .subdomain-card:nth-child(2) { animation-delay: 0.2s; }
+    .subdomain-card:nth-child(3) { animation-delay: 0.3s; }
   </style>
 </head>
 <body>
-  <h1>🌐 Subdomains of 23841412.xyz</h1>
+  <div class="bg-animation">
+    <div class="neural-network" id="neuralNetwork"></div>
+    <div id="particles"></div>
+  </div>
 
-  <ul class="subdomain-list">
-    <li><a href="https://chat.23841412.xyz">chat.23841412.xyz</a></li>
-    <li><a href="https://staging.23841412.xyz">staging.23841412.xyz</a></li>
-    <li><a href="https://rick.23841412.xyz">rick.23841412.xyz</a></li>
-  </ul>
+  <div class="container">
+    <h1 class="title" data-text="23841412.xyz">23841412.xyz</h1>
+    <div class="subtitle">Neural Network Hub</div>
+    
+    <div class="subdomain-grid">
+      <div class="subdomain-card">
+        <div class="status">
+          <div class="status-dot"></div>
+          <span>ONLINE</span>
+        </div>
+        <div class="card-content">
+          <a href="https://chat.23841412.xyz" class="subdomain-link">
+            <div class="card-icon">💬</div>
+            <div class="subdomain-name">chat.23841412.xyz</div>
+            <div class="subdomain-description">
+              Advanced AI communication hub with real-time neural processing and quantum-encrypted conversations.
+            </div>
+            <div class="access-btn">
+              <span>ACCESS</span>
+              <span>→</span>
+            </div>
+          </a>
+        </div>
+      </div>
 
-  <footer>
-    © 2025 23841412.xyz — All rights reserved
-  </footer>
+      <div class="subdomain-card">
+        <div class="status">
+          <div class="status-dot"></div>
+          <span>ONLINE</span>
+        </div>
+        <div class="card-content">
+          <a href="https://staging.23841412.xyz" class="subdomain-link">
+            <div class="card-icon">⚡</div>
+            <div class="subdomain-name">staging.23841412.xyz</div>
+            <div class="subdomain-description">
+              Experimental deployment environment for testing next-generation protocols and bleeding-edge features.
+            </div>
+            <div class="access-btn">
+              <span>ACCESS</span>
+              <span>→</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="subdomain-card">
+        <div class="status">
+          <div class="status-dot"></div>
+          <span>ONLINE</span>
+        </div>
+        <div class="card-content">
+          <a href="https://rick.23841412.xyz" class="subdomain-link">
+            <div class="card-icon">🚀</div>
+            <div class="subdomain-name">rick.23841412.xyz</div>
+            <div class="subdomain-description">
+              Interdimensional portal system with reality-bending capabilities and multiverse access protocols.
+            </div>
+            <div class="access-btn">
+              <span>ACCESS</span>
+              <span>→</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2025 23841412.xyz — Powered by Neural Networks
+    </div>
+  </div>
+
+  <script>
+    // Create neural network background
+    function createNeuralNetwork() {
+      const network = document.getElementById('neuralNetwork');
+      const nodes = [];
+      const nodeCount = 20;
+
+      // Create nodes
+      for (let i = 0; i < nodeCount; i++) {
+        const node = document.createElement('div');
+        node.className = 'node';
+        node.style.left = Math.random() * 100 + '%';
+        node.style.top = Math.random() * 100 + '%';
+        node.style.animationDelay = Math.random() * 3 + 's';
+        network.appendChild(node);
+        nodes.push({
+          element: node,
+          x: parseFloat(node.style.left),
+          y: parseFloat(node.style.top)
+        });
+      }
+
+      // Create connections
+      nodes.forEach((nodeA, i) => {
+        nodes.slice(i + 1).forEach(nodeB => {
+          const distance = Math.sqrt(
+            Math.pow(nodeA.x - nodeB.x, 2) + Math.pow(nodeA.y - nodeB.y, 2)
+          );
+          
+          if (distance < 25) {
+            const connection = document.createElement('div');
+            connection.className = 'connection';
+            const angle = Math.atan2(nodeB.y - nodeA.y, nodeB.x - nodeA.x);
+            connection.style.left = nodeA.x + '%';
+            connection.style.top = nodeA.y + '%';
+            connection.style.width = distance + 'vw';
+            connection.style.transform = `rotate(${angle}rad)`;
+            connection.style.animationDelay = Math.random() * 2 + 's';
+            network.appendChild(connection);
+          }
+        });
+      });
+    }
+
+    // Create floating particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      
+      setInterval(() => {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+        particlesContainer.appendChild(particle);
+
+        setTimeout(() => {
+          particle.remove();
+        }, 15000);
+      }, 2000);
+    }
+
+    // Add interactive effects
+    document.querySelectorAll('.subdomain-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+        
+        card.style.transform = `translateY(-15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+    // Initialize
+    createNeuralNetwork();
+    createParticles();
+
+    // Add glitch effect to title occasionally
+    setInterval(() => {
+      const title = document.querySelector('.title');
+      title.style.animation = 'none';
+      setTimeout(() => {
+        title.style.animation = 'gradientShift 3s ease-in-out infinite, glitch 0.3s ease-in-out infinite alternate';
+      }, 100);
+    }, 10000);
+  </script>
 </body>
 </html>
