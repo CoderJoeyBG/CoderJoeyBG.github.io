@@ -1,194 +1,717 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>23841412.xyz</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>23841412.xyz — Portal</title>
 <style>
-  /* RESET */
-  * {margin:0; padding:0; box-sizing:border-box;}
-
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #1e1e2f, #282845);
-    color: white;
-    overflow-x: hidden;
+  /* ========== VARIABLES =========== */
+  :root{
+    --bg-1: #0f1724;
+    --bg-2: #0b1020;
+    --card: rgba(255,255,255,0.04);
+    --glass: rgba(255,255,255,0.06);
+    --accent: #6ee7ff;
+    --accent-2: #ff7acb;
+    --muted: rgba(255,255,255,0.65);
+    --glass-border: rgba(255,255,255,0.06);
+    --success: #2ee6a7;
+    --danger: #ff6b6b;
+    --shadow: 0 8px 30px rgba(2,6,23,0.6);
+    --radius: 14px;
+    --glass-blur: 8px;
+    --max-w: 1100px;
+    --transition: 280ms cubic-bezier(.2,.9,.3,1);
+    --glass-gradient: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  }
+  /* Light theme */
+  :root[data-theme="light"]{
+    --bg-1: #f6f8fb;
+    --bg-2: #e9eef7;
+    --card: rgba(10,12,20,0.03);
+    --glass: rgba(255,255,255,0.8);
+    --glass-border: rgba(10,12,20,0.06);
+    --muted: rgba(10,12,20,0.7);
+    --shadow: 0 8px 28px rgba(20,30,50,0.06);
+    --accent: #0ea5e9;
+    --accent-2: #ec4899;
+    --glass-gradient: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
   }
 
-  /* LOADING SCREEN */
-  #loading-screen {
-    position: fixed;
-    inset: 0;
-    background: #1e1e2f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    z-index: 9999;
-  }
-  .loader {
-    border: 5px solid rgba(255,255,255,0.2);
-    border-top: 5px solid #00f5ff;
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    animation: spin 1s linear infinite;
-    margin-bottom: 15px;
-  }
-  @keyframes spin {
-    to {transform: rotate(360deg);}
-  }
-  #loading-screen p {
-    font-size: 1.2em;
-    letter-spacing: 1px;
-    opacity: 0.8;
+  /* ========== RESET =========== */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(110,231,255,0.04), transparent),
+                radial-gradient(900px 400px at 95% 90%, rgba(255,122,203,0.03), transparent),
+                linear-gradient(180deg,var(--bg-1),var(--bg-2));
+    color: #e6eef6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:32px;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    gap:20px;
   }
 
-  /* MAIN CONTAINER */
-  .container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 60px 20px;
-    animation: fadeIn 1s ease forwards;
-    display: none;
+  /* ========== LAYOUT ========== */
+  .app {
+    width:100%;
+    max-width:var(--max-w);
+    display:flex;
+    gap:28px;
+    align-items:flex-start;
   }
-  @keyframes fadeIn {
-    from {opacity:0; transform: translateY(20px);}
-    to {opacity:1; transform: translateY(0);}
-  }
-
-  h1 {
-    text-align: center;
-    font-size: 3em;
-    margin-bottom: 40px;
-    background: linear-gradient(90deg, #00f5ff, #ff00d4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .panel {
+    background: var(--glass-gradient);
+    border-radius: var(--radius);
+    padding:18px;
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow);
   }
 
-  /* DOMAIN GRID */
+  /* LEFT COLUMN - MAIN */
+  .main {
+    flex:1 1 720px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    min-width:320px;
+  }
+
+  /* HEADER */
+  header.top {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .brand {
+    display:flex;
+    gap:14px;
+    align-items:center;
+  }
+  .logo {
+    width:58px;
+    height:58px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    color:#021024;
+    font-weight:700;
+    font-size:18px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25), inset 0 -6px 20px rgba(255,255,255,0.06);
+  }
+  .title {
+    display:flex;
+    flex-direction:column;
+    line-height:1;
+  }
+  .title h1 {
+    font-size:18px;
+    margin:0;
+    color:var(--muted);
+  }
+  .title p { margin:0; font-size:12px; color:var(--muted); opacity:0.9 }
+
+  /* Controls */
+  .controls {
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .search {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--card);
+    padding:8px 10px;
+    border-radius:10px;
+    border:1px solid var(--glass-border);
+  }
+  .search input{
+    background:transparent;
+    border:0;
+    outline:none;
+    color:inherit;
+    width:220px;
+    font-size:14px;
+  }
+
+  .btn {
+    display:inline-grid;
+    place-items:center;
+    gap:8px;
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition: all var(--transition);
+    font-size:13px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  }
+  .btn:active { transform: translateY(1px) scale(.998) }
+  .btn.ghost { background:transparent; border:1px solid var(--glass-border) }
+  .btn.toggle { padding:8px; width:44px; height:36px; }
+
+  /* right column */
+  .side {
+    width:320px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+
+  /* GRID */
   .domains {
-    display: grid;
-    gap: 25px;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display:grid;
+    gap:16px;
+    grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
   }
 
-  .domain {
-    background: rgba(255,255,255,0.05);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
+  /* CARD */
+  .card {
+    position:relative;
+    border-radius:12px;
+    padding:16px;
+    overflow:visible;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid var(--glass-border);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
   }
-  .domain h2 {
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    color: #00f5ff;
+  .card:focus { outline:3px solid rgba(110,231,255,0.12); }
+  .card .icon {
+    width:56px; height:56px; border-radius:10px; flex:0 0 56px;
+    display:grid; place-items:center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.03);
+    overflow:hidden;
+    position:relative;
   }
-  .domain p {
-    font-size: 0.95em;
-    color: rgba(255,255,255,0.8);
+  .card .meta { flex:1 1 auto; min-width:0 }
+  .card h3 { margin:0; font-size:15px; color:var(--accent); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+  .card p { margin:6px 0 0 0; font-size:13px; color:var(--muted); opacity:0.95; line-height:1.3 }
+  .badges { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap }
+  .badge {
+    font-size:11px; padding:6px 8px; border-radius:999px;
+    background:rgba(255,255,255,0.03);
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.02);
   }
-  .domain a {
-    color: inherit;
-    text-decoration: none;
+
+  /* hover / tilt / parallax */
+  .card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(255,255,255,0.06);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.55);
   }
-  /* Hover animations based on vibe */
-  .domain[data-vibe="chat"]:hover {background: linear-gradient(135deg, #1d2b64, #f8cdda);}
-  .domain[data-vibe="staging"]:hover {background: linear-gradient(135deg, #232526, #414345);}
-  .domain[data-vibe="dev"]:hover {background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);}
-  .domain[data-vibe="rick"]:hover {background: linear-gradient(135deg, #ff416c, #ff4b2b);}
-  .domain[data-vibe="vpw"]:hover {background: linear-gradient(135deg, #56ab2f, #a8e063);}
-  .domain[data-vibe="whisper"]:hover {background: linear-gradient(135deg, #654ea3, #eaafc8);}
-  
-  /* Hover zoom effect */
-  .domain:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  .card .floating {
+    position:absolute;
+    right:-30px; top:-30px;
+    width:120px; height:120px; pointer-events:none;
+    opacity:0.06; transform:translateZ(0);
   }
+
+  /* actions */
+  .actions {
+    display:flex; gap:8px; margin-left:auto;
+  }
+  .action {
+    border-radius:10px; padding:8px; border:0; cursor:pointer; font-size:13px;
+    background:transparent; color:var(--muted);
+  }
+  .action:focus { outline:2px solid rgba(110,231,255,0.12) }
+
+  /* LOADING UX (full-screen) */
+  #loading {
+    --height:6px;
+    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+    z-index:9999; pointer-events:auto;
+    background: linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.5));
+    backdrop-filter: blur(8px);
+  }
+  .load-card{
+    width:min(880px,calc(100% - 48px));
+    padding:22px;
+    border-radius:16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid var(--glass-border);
+    display:flex; gap:14px; align-items:center; box-shadow:var(--shadow);
+  }
+  .spinner {
+    width:56px; height:56px; border-radius:12px; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    color:#021024; font-weight:700;
+    animation: spinner-tilt 1.6s linear infinite;
+    flex-shrink:0;
+  }
+  @keyframes spinner-tilt { from{transform:rotate(0)} to {transform:rotate(360deg)} }
+  .progress {
+    flex:1;
+  }
+  .progress .bar {
+    height:10px; width:100%; background:rgba(255,255,255,0.03); border-radius:999px; overflow:hidden;
+    border:1px solid rgba(255,255,255,0.02)
+  }
+  .progress .bar > i {
+    display:block; height:100%; width:0%;
+    background: linear-gradient(90deg,var(--accent),var(--accent-2));
+    border-radius:999px; transition: width 420ms linear;
+  }
+  .progress small { display:block; margin-top:8px; font-size:13px; color:var(--muted) }
+
+  /* Toasts */
+  .toasts { position:fixed; right:20px; bottom:20px; display:flex; gap:10px; flex-direction:column; z-index:99999 }
+  .toast {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    padding:10px 14px; border-radius:10px; color:var(--muted); box-shadow:var(--shadow);
+    transform: translateY(10px); opacity:0; transition:all 300ms;
+  }
+  .toast.show { transform:none; opacity:1 }
+
+  /* TOOLTIP */
+  .hint { position:relative; display:inline-block }
+  .hint[data-tip]:hover::after {
+    content: attr(data-tip);
+    position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+    background:rgba(0,0,0,0.7); color:white; font-size:12px; padding:6px 8px; border-radius:6px;
+    white-space:nowrap; pointer-events:none;
+  }
+
+  /* empty state */
+  .empty { text-align:center; padding:42px; color:var(--muted) }
+
+  /* keyboard focus helper */
+  .kbd-hint { font-size:12px; color:var(--muted) }
+
+  /* small screens */
+  @media (max-width:980px){
+    body{padding:18px}
+    .app{flex-direction:column; gap:14px}
+    .side{width:100%}
+  }
+
+  /* prefers reduced motion */
+  @media (prefers-reduced-motion:reduce){
+    * { transition:none !important; animation:none !important }
+  }
+
 </style>
 </head>
 <body>
-
-<!-- LOADING SCREEN -->
-<div id="loading-screen">
-  <div class="loader"></div>
-  <p>Loading 23841412.xyz...</p>
+<!-- LOADING OVERLAY -->
+<div id="loading" aria-hidden="false">
+  <div class="load-card" role="status" aria-live="polite">
+    <div class="spinner" aria-hidden="true">238</div>
+    <div class="progress">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <strong style="color:var(--muted)">Loading portal</strong>
+        <small id="percent">0%</small>
+      </div>
+      <div class="bar" aria-hidden="true"><i id="progressFill"></i></div>
+      <small id="statusText">Initializing assets…</small>
+    </div>
+  </div>
 </div>
 
-<!-- MAIN CONTENT -->
-<div class="container">
-  <h1>23841412.xyz</h1>
-  <div class="domains" id="domains"></div>
+<div class="app" aria-hidden="true">
+  <div class="main panel">
+    <header class="top" role="banner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">238</div>
+        <div class="title">
+          <h1>23841412.xyz</h1>
+          <p>Portal • quick links & dev utilities</p>
+        </div>
+      </div>
+
+      <div class="controls" role="search">
+        <div class="search" title="Search domains">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <input id="q" placeholder="Search domain or description..." aria-label="Search domains" />
+        </div>
+
+        <div style="display:flex; gap:8px; align-items:center">
+          <select id="sort" class="btn ghost" aria-label="Sort domains" title="Sort">
+            <option value="default">Sort: Default</option>
+            <option value="name">Sort: Name</option>
+            <option value="vibe">Sort: Vibe</option>
+          </select>
+
+          <button id="themeToggle" class="btn toggle hint" data-tip="Toggle theme (T)" aria-pressed="false" title="Toggle theme">
+            <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M12 20v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px">
+        <div style="display:flex; gap:12px; align-items:center">
+          <strong style="letter-spacing:0.2px">Your domains</strong>
+          <span class="kbd-hint">Use arrows ↔ and Enter to open</span>
+        </div>
+        <div class="kbd-hint">Showing <span id="count">0</span></div>
+      </div>
+
+      <div class="domains" id="domains" role="list" tabindex="0" aria-label="Domain list">
+        <!-- cards will be injected here -->
+      </div>
+
+      <div id="empty" class="empty" style="display:none">
+        <p>No domains found — try clearing the search.</p>
+      </div>
+    </section>
+  </div>
+
+  <aside class="side panel" aria-label="Utilities">
+    <div>
+      <strong>Quick actions</strong>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button id="addDemo" class="btn" title="Add demo domain">+ Add demo</button>
+        <button id="copyAll" class="btn ghost" title="Copy all URLs">Copy all</button>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <strong>Status</strong>
+      <div style="margin-top:10px; display:flex; gap:10px; flex-direction:column">
+        <div style="display:flex; gap:10px; align-items:center">
+          <div style="width:10px;height:10px;border-radius:99px;background:var(--success)"></div>
+          <small>All systems nominal</small>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center">
+          <div style="width:10px;height:10px;border-radius:99px;background:var(--danger)"></div>
+          <small>Some services in staging</small>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px">
+      <strong>Help</strong>
+      <p style="color:var(--muted); font-size:13px; margin-top:8px">Tip: press <kbd>Ctrl/Cmd</kbd> + <kbd>K</kbd> to focus search. Press <kbd>T</kbd> to toggle theme.</p>
+    </div>
+  </aside>
 </div>
+
+<!-- Toast container -->
+<div class="toasts" id="toasts" aria-hidden="true"></div>
 
 <script>
-  const domains = [
-    {
-      name: 'chat.23841412.xyz',
-      description: 'Discord-like chat platform for community discussions.',
-      url: 'https://chat.23841412.xyz',
-      vibe: 'chat'
-    },
-    {
-      name: 'staging.23841412.xyz',
-      description: 'Staging environment for testing new features.',
-      url: 'https://staging.23841412.xyz',
-      vibe: 'staging'
-    },
-    {
-      name: 'dev.23841412.xyz',
-      description: 'Development environment for building new features.',
-      url: 'https://dev.23841412.xyz',
-      vibe: 'dev'
-    },
-    {
-      name: 'rick.23841412.xyz',
-      description: 'Never gonna give you up, never gonna let you down... 🎵',
-      url: 'https://rick.23841412.xyz',
-      vibe: 'rick'
-    },
-    {
-      name: 'vpw.23841412.xyz',
-      description: 'My Pet Friend | 😺',
-      url: 'https://vpw.23841412.xyz',
-      vibe: 'vpw'
-    },
-    {
-      name: 'whisper.23841412.xyz',
-      description: 'Whispering Walls - Anonymous Stories, Shared Safely',
-      url: 'https://whisper.23841412.xyz',
-      vibe: 'whisper'
-    }
-  ];
+/* ========== DATA ========== */
+const initialDomains = [
+  { name: 'chat.23841412.xyz', description: 'Discord-like chat platform for community discussions.', url: 'https://chat.23841412.xyz', vibe: 'chat', status: 'live' },
+  { name: 'staging.23841412.xyz', description: 'Staging environment for testing new features.', url: 'https://staging.23841412.xyz', vibe: 'staging', status: 'staging' },
+  { name: 'dev.23841412.xyz', description: 'Development environment for building new features.', url: 'https://dev.23841412.xyz', vibe: 'dev', status: 'dev' },
+  { name: 'rick.23841412.xyz', description: 'Never gonna give you up, never gonna let you down... 🎵', url: 'https://rick.23841412.xyz', vibe: 'rick', status: 'meme' },
+  { name: 'vpw.23841412.xyz', description: 'My Pet Friend | 😺', url: 'https://vpw.23841412.xyz', vibe: 'vpw', status: 'live' },
+  { name: 'whisper.23841412.xyz', description: 'Whispering Walls - Anonymous Stories, Shared Safely', url: 'https://whisper.23841412.xyz', vibe: 'whisper', status: 'live' }
+];
 
-  function renderDomains() {
-    const container = document.getElementById('domains');
-    domains.forEach(domain => {
-      const div = document.createElement('div');
-      div.className = 'domain';
-      div.dataset.vibe = domain.vibe;
-      div.innerHTML = `
-        <h2><a href="${domain.url}" target="_blank">${domain.name}</a></h2>
-        <p>${domain.description}</p>
-      `;
-      container.appendChild(div);
-    });
+let domains = structuredClone(initialDomains);
+
+/* ========== UTIL: SVG ICONS (inline) ========== */
+function iconFor(vibe){
+  const common = (inner) => `<svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true">${inner}</svg>`;
+  switch(vibe){
+    case 'chat':
+      return common(`<rect x="6" y="8" width="36" height="26" rx="4" fill="url(#g)"></rect>
+        <g fill="#fff" opacity="0.95"><circle cx="18" cy="21" r="1.8"/><circle cx="24" cy="21" r="1.8"/><circle cx="30" cy="21" r="1.8"/></g>
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#4fd1ff"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient></defs>`);
+    case 'staging':
+      return common(`<circle cx="24" cy="20" r="12" fill="url(#g)"/><rect x="10" y="30" width="28" height="6" rx="2" fill="#fff" opacity="0.06"/>
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#a1a1a1"/><stop offset="1" stop-color="#6b7280"/></linearGradient></defs>`);
+    case 'dev':
+      return common(`<path d="M6 36V12l18-6 18 6v24l-18 6z" fill="url(#g)"/><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>`);
+    case 'rick':
+      return common(`<rect x="6" y="6" width="36" height="36" rx="6" fill="url(#g)"/><text x="24" y="30" text-anchor="middle" font-size="14" fill="#021024" font-weight="700">🎵</text>
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ff66a3"/><stop offset="1" stop-color="#ff8a4b"/></linearGradient></defs>`);
+    case 'vpw':
+      return common(`<path d="M24 6c8 0 14 6 14 14s-6 14-14 14S10 28 10 20 16 6 24 6z" fill="url(#g)"/><circle cx="19" cy="18" r="2" fill="#fff"/><circle cx="29" cy="18" r="2" fill="#fff"/>
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#86efac"/><stop offset="1" stop-color="#34d399"/></linearGradient></defs>`);
+    case 'whisper':
+      return common(`<path d="M8 20c4-10 32-10 36 0v12H8z" fill="url(#g)"/><circle cx="24" cy="22" r="3" fill="#fff" opacity="0.9"/>
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#fbcfe8"/></linearGradient></defs>`);
+    default:
+      return common(`<rect x="6" y="6" width="36" height="36" rx="8" fill="#9ca3af"></rect>`);
   }
+}
 
-  renderDomains();
+/* ========== RENDER ========== */
+const el = {
+  domains: document.getElementById('domains'),
+  q: document.getElementById('q'),
+  sort: document.getElementById('sort'),
+  count: document.getElementById('count'),
+  empty: document.getElementById('empty'),
+  toasts: document.getElementById('toasts')
+};
 
-  // Fake loading simulation
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('loading-screen').style.display = 'none';
-      document.querySelector('.container').style.display = 'block';
-    }, 1500);
+function renderList(list){
+  el.domains.innerHTML = '';
+  list.forEach((d, idx) => {
+    const item = document.createElement('div');
+    item.className = 'card';
+    item.tabIndex = 0;
+    item.dataset.index = idx;
+    item.setAttribute('role','listitem');
+    item.innerHTML = `
+      <div class="icon" aria-hidden="true">${iconFor(d.vibe)}</div>
+      <div class="meta">
+        <h3 title="${d.name}">${d.name}</h3>
+        <p title="${d.description}">${d.description}</p>
+        <div class="badges">
+          <span class="badge">${d.vibe}</span>
+          <span class="badge">${d.status}</span>
+        </div>
+      </div>
+      <div class="actions" aria-hidden="true">
+        <button class="action" data-action="open" title="Open">Open</button>
+        <button class="action" data-action="copy" title="Copy URL">Copy</button>
+        <button class="action" data-action="ping" title="Ping">Ping</button>
+      </div>
+      <div class="floating" aria-hidden="true">${floatingSvgFor(d.vibe)}</div>
+    `;
+    // mouse tilt effect (subtle)
+    attachCardInteractions(item, d);
+    el.domains.appendChild(item);
   });
-</script>
+  el.count.textContent = list.length;
+  el.empty.style.display = list.length ? 'none' : 'block';
+}
 
+function floatingSvgFor(vibe){
+  // subtle decorative element per vibe
+  switch(vibe){
+    case 'chat': return `<svg viewBox="0 0 120 120" width="120" height="120"><circle cx="60" cy="60" r="40" fill="url(#g2)"/><defs><linearGradient id="g2" x1="0" x2="1"><stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs></svg>`;
+    case 'rick': return `<svg viewBox="0 0 120 120" width="120" height="120"><g transform="rotate(20 60 60)"><rect x="10" y="10" width="100" height="100" rx="10" fill="url(#r1)"/></g><defs><linearGradient id="r1" x1="0" x2="1"><stop offset="0" stop-color="#ff9acb"/><stop offset="1" stop-color="#ff704d"/></linearGradient></defs></svg>`;
+    case 'vpw': return `<svg viewBox="0 0 120 120"><path d="M20 90c20-36 80-36 100 0" stroke="#86efac" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`;
+    case 'whisper': return `<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="42" ry="24" fill="#c4b5fd" opacity="0.12"/></svg>`;
+    case 'dev': return `<svg viewBox="0 0 120 120"><rect x="24" y="24" width="72" height="72" rx="8" stroke="#0ea5e9" stroke-width="3" fill="none" opacity="0.09"/></svg>`;
+    default: return '';
+  }
+}
+
+/* minor animation / interactions for each card */
+function attachCardInteractions(card, data){
+  const icon = card.querySelector('.icon');
+  // hover icon animations (CSS-less, via inline transforms)
+  card.addEventListener('mousemove', (ev) => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+    const dx = (ev.clientX - cx) / rect.width * 10;
+    const dy = (ev.clientY - cy) / rect.height * 6;
+    card.style.transform = `perspective(800px) rotateX(${ -dy }deg) rotateY(${ dx }deg) translateY(-6px) scale(1.01)`;
+    icon.style.transform = `translate(${dx*0.6}px, ${dy*0.8}px)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    icon.style.transform = '';
+  });
+
+  // action buttons
+  card.querySelectorAll('.action').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const a = btn.dataset.action;
+      if (a==='open') { window.open(data.url, '_blank'); toast('Opened ' + data.name); }
+      if (a==='copy') { navigator.clipboard?.writeText(data.url).then(()=>toast('Copied URL'), ()=>toast('Copy failed')); }
+      if (a==='ping') { simulatePing(data.url).then(ok=> toast(ok ? 'Ping OK' : 'Ping failed', ok ? 'success' : 'error')); }
+    });
+  });
+
+  // open on card click
+  card.addEventListener('click', () => window.open(data.url, '_blank'));
+
+  // keyboard enter to open
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') window.open(data.url, '_blank');
+  });
+
+  // animated icon per vibe on hover
+  card.addEventListener('mouseenter', () => animateVibeIcon(card, data.vibe));
+}
+
+/* ========== INTERACTIONS: ping / toast / search / sort / keyboard nav ========== */
+function simulatePing(url){
+  return new Promise(res=>{
+    // simulate network ping: random success for demo
+    setTimeout(()=> res(Math.random() > 0.12), 700 + Math.random()*700);
+  });
+}
+
+function toast(text, type='default'){
+  const t = document.createElement('div');
+  t.className='toast';
+  t.innerHTML = `<strong style="display:block">${text}</strong>`;
+  el.toasts.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),300) }, 2600);
+}
+
+/* SEARCH / FILTER / SORT */
+function applyFilters(){
+  const q = el.q.value.trim().toLowerCase();
+  const s = el.sort.value;
+  let list = domains.filter(d => (!q) || (d.name.toLowerCase().includes(q) || d.description.toLowerCase().includes(q) || d.vibe.toLowerCase().includes(q)));
+  if (s === 'name') list.sort((a,b)=>a.name.localeCompare(b.name));
+  if (s === 'vibe') list.sort((a,b)=>a.vibe.localeCompare(b.vibe));
+  renderList(list);
+}
+
+/* keyboard helpers */
+let focusIndex = 0;
+function focusCardAt(i){
+  const cards = el.domains.querySelectorAll('.card');
+  if (!cards.length) return;
+  focusIndex = (i + cards.length) % cards.length;
+  cards[focusIndex].focus();
+}
+document.addEventListener('keydown', (e)=>{
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { focusCardAt(focusIndex + 1); e.preventDefault(); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { focusCardAt(focusIndex - 1); e.preventDefault(); }
+  if (e.key === 't' || e.key === 'T') toggleTheme();
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); el.q.focus(); el.q.select(); }
+});
+
+/* animate vibe icon */
+function animateVibeIcon(card, vibe){
+  const icon = card.querySelector('.icon svg');
+  if (!icon) return;
+  if (vibe === 'chat'){
+    icon.animate([{transform:'scale(1)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:600,iterations:1});
+  } else if (vibe === 'rick'){
+    icon.animate([{transform:'rotate(0)'},{transform:'rotate(360deg)'}],{duration:700,iterations:1});
+  } else if (vibe === 'vpw'){
+    icon.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}],{duration:550,iterations:1});
+  } else if (vibe === 'whisper'){
+    icon.animate([{opacity:0.7, transform:'translateX(0)'},{opacity:1, transform:'translateX(6px)'},{opacity:0.85, transform:'translateX(0)'}],{duration:900,iterations:1});
+  } else if (vibe === 'dev'){
+    icon.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:500,iterations:1});
+  }
+}
+
+/* ========== THEME ========== */
+function setTheme(name){
+  document.documentElement.setAttribute('data-theme', name);
+  localStorage.setItem('portal-theme', name);
+  document.getElementById('themeToggle').setAttribute('aria-pressed', String(name==='dark'));
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  setTheme(cur === 'dark' ? 'light' : 'dark');
+}
+
+/* ========== BOOTSTRAP: demo actions ========== */
+document.getElementById('addDemo').addEventListener('click', ()=>{
+  const newOne = { name:`demo${Math.floor(Math.random()*999)}.23841412.xyz`, description:'Quick demo site', url:'https://example.com', vibe:'dev', status:'demo' };
+  domains.push(newOne);
+  applyFilters();
+  toast('Demo domain added');
+});
+document.getElementById('copyAll').addEventListener('click', ()=>{
+  const text = domains.map(d=>d.url).join('\\n');
+  navigator.clipboard?.writeText(text).then(()=>toast('All URLs copied'), ()=>toast('Copy failed'));
+});
+
+/* search + sort events */
+el.q.addEventListener('input', applyFilters);
+el.sort.addEventListener('change', applyFilters);
+
+/* keyboard quick focus */
+document.addEventListener('keydown', (e)=> {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+    el.q.focus(); el.q.select();
+  }
+});
+
+/* ========== LOADING SIMULATION (progress bar) ========== */
+const loading = document.getElementById('loading');
+const pct = document.getElementById('percent');
+const fill = document.getElementById('progressFill');
+const statusText = document.getElementById('statusText');
+
+const loadSteps = [
+  ['Loading assets', 18],
+  ['Preparing UI', 32],
+  ['Optimizing layout', 22],
+  ['Finalizing', 18],
+  ['Done', 10]
+];
+
+let progress = 0;
+function runLoader(i=0){
+  if (i >= loadSteps.length) return finishLoad();
+  const [label, amount] = loadSteps[i];
+  statusText.textContent = label + '...';
+  const target = progress + amount;
+  const step = setInterval(()=> {
+    progress += Math.ceil(Math.random()*2.2);
+    if (progress >= target) {
+      progress = target;
+      clearInterval(step);
+      runLoader(i+1);
+    }
+    const clamped = Math.min(progress, 100);
+    pct.textContent = clamped + '%';
+    fill.style.width = clamped + '%';
+  }, 80 + Math.random()*80);
+}
+function finishLoad(){
+  // hide loader and show app
+  loading.style.transition = 'opacity 400ms ease';
+  loading.style.opacity = 0;
+  setTimeout(()=> loading.remove(), 420);
+  document.querySelector('.app').style.display = 'flex';
+  document.querySelector('.app').setAttribute('aria-hidden','false');
+  document.body.removeAttribute('style'); // keep style but allow responsiveness
+  applyFilters();
+}
+
+/* initial theme */
+const saved = localStorage.getItem('portal-theme') || 'dark';
+setTheme(saved);
+
+/* start loader and show after small delay */
+document.querySelector('.app').style.display = 'none';
+runLoader();
+
+/* initial data render with slight delay (mimic fetch) */
+setTimeout(()=> { domains = structuredClone(initialDomains); }, 200);
+
+/* helper: focus search on ctrl+k */
+window.addEventListener('load', ()=> {
+  // make things accessible after load
+  document.querySelector('.app').setAttribute('aria-hidden','false');
+});
+
+/* aria: toasts container */
+el.toasts.setAttribute('aria-hidden','false');
+
+/* ========== keyboard: jump to first card when pressing Tab on list container ========== */
+el.domains.addEventListener('keydown', (e)=> {
+  if (e.key === 'Enter') {
+    const first = el.domains.querySelector('.card');
+    if (first) first.click();
+  }
+});
+
+/* focus on search with Ctrl+K handled above */
+
+/* ========== expose toggle for global use ========== */
+window.toggleTheme = toggleTheme;
+
+</script>
 </body>
 </html>
